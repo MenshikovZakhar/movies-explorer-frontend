@@ -1,0 +1,129 @@
+.nav-menu__menu-adapt {
+    height: 44px;
+    width: 44px;
+    background-image: url(../../images/menu.svg);
+    cursor: pointer;
+    display: none;
+    position: relative;
+}
+
+.nav-menu__menu-adapt:hover {
+    opacity: 0.8;
+}
+
+.nav-movie__menu {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 400;
+    font-size: 13px;
+    font-style: normal;
+    line-height: 18px;
+    align-items: baseline;
+}
+
+.nav-movie__movie {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-movie__link {
+    text-decoration: none;
+    color: black;
+    margin-right: 16px;
+}
+
+.nav-movie__link:hover {
+    opacity: 0.8;
+}
+
+.active {
+    font-weight: 500;
+}
+
+.navigation__profile-link {
+    font-family: 'Inter', 'Helvetica', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #000;
+    text-decoration: none;
+    white-space: nowrap;
+    width: min-content;
+    height: 30px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    margin: 15px;
+}
+
+.navigation__profile-link:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.navigation__user-icon {
+    width: 30px;
+    height: 30px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    background-image: url(../../images/user.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    margin-left: 13px;
+}
+
+.nav-movie__link_profile {
+    margin: 0;
+    width: 100px;
+    height: 32px;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+@media screen and (max-width: 768px) {
+    .nav-menu__menu-adapt {
+        display: block;
+    }
+
+    .active {
+        border-bottom: 2px solid #000;
+    }
+
+    .nav-movie__menu {
+        display: none;
+    }
+
+    .nav-movie__link_profile {
+        display: none;
+    }
+
+    .navigation__profile-link {
+        margin: 0;
+        margin-top: 590px;
+    }
+
+}
+
+@media screen and (max-width: 320px) {
+    .nav-menu__menu-adapt {
+        width: 40px;
+        height: 43px;
+        background-size: contain;
+        background-position: center;
+    }
+
+    .navigation__profile-link {
+        margin: 0;
+        margin-top: 420px;
+    }
+
+
+}

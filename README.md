@@ -1,1 +1,1 @@
-# movies-explorer-frontend
+Фронтенд диплома Яндекс.Практикум
