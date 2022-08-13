@@ -4,7 +4,7 @@ import NavigationMovie from '../NavigationMovie/NavigationMovie';
 
 function Navigation() {
     // Данный useState временный, для выполнения этапа верстка
-    const [login, setLogin] = useState(true);
+    const [login, setLogin] = useState(false);
 
     return <>{login ? <NavigationMovie /> : <NavigationAuth />}</>;
 };
