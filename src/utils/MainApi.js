@@ -72,7 +72,7 @@ export default class Api {
 
 //подключение апи
 export const mainApi = new Api({
-    baseUrl: 'https://ap.domainname.movies.nomoredomains.xyz',
+    baseUrl: 'https://api.domainname.movies.nomoredomains.xyz',
     headers: {
         'content-type': 'application/json'
     }
