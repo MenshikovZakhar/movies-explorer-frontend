@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "http://api.domainname.movies.nomoredomains.xyz";
 
 function handleCheckResponse(res) {
     if (res.ok) {
