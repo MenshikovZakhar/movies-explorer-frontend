@@ -1,4 +1,4 @@
-const BASE_URL = "http://api.domainname.movies.nomoredomains.xyz";
+const BASE_URL = 'https://ap.domainname.movies.nomoredomains.xyz';
 
 function handleCheckResponse(res) {
     if (res.ok) {
