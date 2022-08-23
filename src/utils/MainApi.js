@@ -72,7 +72,7 @@ export default class Api {
 
 //подключение апи
 export const mainApi = new Api({
-    baseUrl: 'https://api.domainname.movies.nomoredomains.xyz',
+    baseUrl: 'http://localhost:3000',
     headers: {
         'content-type': 'application/json'
     }
