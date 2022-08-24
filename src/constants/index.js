@@ -26,6 +26,7 @@ export const NOT_FOUND_STATUS = '404';
 export const REGISTRATION_MESSAGE = 'Вы успешно зарегистрировались!';
 export const UPDATE_DATA_MESSAGE = 'Данные успешно изменены!';
 export const DELETE_MOVIE_MESSAGE = 'Фильм удалён';
+export const SAVE_MOVIE_MESSAGE = 'Фильм сохранён';
 
 // Ширина экрана
 export const WIDTH_1279 = 1279;

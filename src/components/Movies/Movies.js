@@ -34,22 +34,14 @@ export const Movies = ({ loggedIn, onClickSaveMovie, openPopupsMessage }) => {
     const onClickShortMovie = (searchData) => {
         localStorage.setItem('shortFilter', searchData);
         const arraySearch = filterArray();
-        return renderShortArray(arraySearch);
-    };
-
-    const renderShortArray = (array) => {
-
-        setFilteredArrayMovies(array);
-
+        return renderArray(arraySearch);
     };
 
     const renderArray = (array) => {
+        setFilteredArrayMovies(array);
         if (array.length === 0) {
             openPopupsMessage(NOT_FOUND_MESSAGE);
-        } else {
-            setFilteredArrayMovies(array);
         }
-        setIsRender(true);
         return setPreloaderOpen(false);
     };
 

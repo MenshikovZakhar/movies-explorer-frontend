@@ -35,10 +35,9 @@ export const SavedMovies = ({
     };
 
     const renderArray = (array) => {
+        setFilteredArrayMovies(array);
         if (array.length === 0) {
             openPopupsMessage(NOT_FOUND_MESSAGE);
-        } else {
-            setFilteredArrayMovies(array);
         }
         return setPreloaderOpen(false);
     };

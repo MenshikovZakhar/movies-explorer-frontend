@@ -13,7 +13,7 @@ import {
     NUMBER_OF_CARDS_LESS_767,
     ADD_NUMBER_CARD_3,
     ADD_NUMBER_CARD_2,
-} from '../../constants';
+} from '../../constants/index.js';
 
 export const MoviesCardList = ({ arrayMovie, type, onClickButtonMovie }) => {
     const [counter, setCounter] = useState();

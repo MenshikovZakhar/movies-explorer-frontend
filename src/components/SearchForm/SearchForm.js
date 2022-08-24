@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './SearchForm.css';
 import classNames from 'classnames';
-import { ENTER_WORD_MESSAGE } from '../../constants';
+import { ENTER_WORD_MESSAGE } from '../../constants/index';
 export const SearchForm = ({
     onClickRequestArray,
     openPopupsMessage,

@@ -20,6 +20,14 @@ export const MoviesCard = ({ movie, type, onClickButtonMovie }) => {
 
     return (
         <section className='movie-card'>
+            <a
+                className='link__trailer'
+                href={movie.trailerLink}
+                target={'_blank'}
+                rel='noopener noreferrer'
+            >
+                <img className='movie__image' src={imageMovie} alt={nameRU} />
+            </a>
             <div className='movie__info'>
                 <div className='movie__text'>
                     <h1 className='movie__title'>{nameRU}</h1>
@@ -49,14 +57,7 @@ export const MoviesCard = ({ movie, type, onClickButtonMovie }) => {
                     ></button>
                 )}
             </div>
-            <a
-                className='link__trailer'
-                href={movie.trailerLink}
-                target={'_blank'}
-                rel='noopener noreferrer'
-            >
-                <img className='movie__image' src={imageMovie} alt={nameRU} />
-            </a>
+
         </section>
     );
 };

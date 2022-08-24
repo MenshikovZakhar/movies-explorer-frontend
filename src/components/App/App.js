@@ -15,17 +15,12 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { CurrentMoviesSaveContext } from '../../contexts/CurrentMoviesSaveContext';
 import { InfoToolTip } from '../InfoToolTip/InfoToolTip';
 import {
-  REGISTRATION_MESSAGE,
-  CONFLICT_ERROR,
   ERROR_SERVER_MESSAGE_SHORT,
-  ERROR_MESSAGE_EMAIL_PASSWORD,
-  UPDATE_DATA_MESSAGE,
   DELETE_MOVIE_MESSAGE,
   ERROR_MOVIES_VALID_DATA_MESSAGE,
-  CONFLICT_ERROR_STATUS,
-  UNAUTHORIZED_STATUS,
   BAD_REQUEST_STATUS,
-} from '../../constants';
+  SAVE_MOVIE_MESSAGE,
+} from '../../constants/index';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({})
@@ -53,7 +48,6 @@ function App() {
           setCurrentMovies(saveCards);
         })
         .catch((err) => {
-
           console.log(err);
         });
     }
@@ -64,7 +58,6 @@ function App() {
     if (jwt) {
       auth.checkToken(jwt)
         .then((res) => {
-
           setLoggedIn(true);
           history.push(location);
         })
@@ -78,17 +71,15 @@ function App() {
   function onRegister(name, password, email) {
     auth.register(name, password, email)
       .then((res) => {
-        if (res) {
-          setLoginErrorMessage('');
-          history.push('/signin');
-        } else if (res.error === 'Bad Request') {
-          setRegisterErrorMessage('Введены невалидные данные');
-        } else if (res.message) {
-          setRegisterErrorMessage(res.message);
-        }
+        onLogin(email, password);
       })
-      .catch(() => {
-        setRegisterErrorMessage(ERROR_SERVER_MESSAGE_SHORT);
+      .catch((err) => {
+        if (err === "Ошибка 409") {
+          setRegisterErrorMessage("Пользователь с таким email уже существует");
+        } else {
+          setRegisterErrorMessage("При регистрации пользователя произошла ошибка");
+        }
+        return;
       })
       .finally(() => {
         messageClean = setTimeout(() => {
@@ -98,28 +89,23 @@ function App() {
       })
   }
 
-  //Авторизации
+  //Авторизация
   function onLogin(password, email) {
     auth.authorize(password, email)
       .then((data) => {
         if (data.token) {
           localStorage.setItem('token', data.token);
-          setLoginErrorMessage('');
           setLoggedIn(true);
           history.push('/movies');
-        } else if (data.error === 'Bad Request') {
-          setLoginErrorMessage('Введены невалидные данные');
-        } else if (data.message) {
+        } if (data.message) {
           setLoginErrorMessage(data.message);
         }
       })
-      .catch(() => {
-        setLoginErrorMessage(ERROR_SERVER_MESSAGE_SHORT);
-
+      .catch((err) => {
+        setLoginErrorMessage(`Ошибка авторизации: ${err}`);
       })
       .finally(() => {
         messageClean = setTimeout(() => {
-
           setLoginErrorMessage('');
         }, 5000);
         setIsSaving(false);
@@ -145,6 +131,8 @@ function App() {
 
     if (response._id) {
       setCurrentMovies((prev) => [...prev, response]);
+      setMessageAcceptAuth(SAVE_MOVIE_MESSAGE);
+      setInfoTooltip(true);
     } else if (response.message === BAD_REQUEST_STATUS) {
       setMessageAcceptAuth(ERROR_MOVIES_VALID_DATA_MESSAGE);
       setInfoTooltip(true);
@@ -160,33 +148,36 @@ function App() {
     const response = await mainApi.deleteMovies(id);
     if (response.message === DELETE_MOVIE_MESSAGE) {
       setCurrentMovies((prev) => prev.filter((el) => el._id !== id));
+      setMessageAcceptAuth(DELETE_MOVIE_MESSAGE);
+      setInfoTooltip(true);
     } else {
-
+      setIsAccept(false);
       setMessageAcceptAuth(ERROR_SERVER_MESSAGE_SHORT);
     }
   };
 
 
   // Редактирование профиля
-  const onClickUpdateProfile = async (userDataNew) => {
-    const response = await mainApi.updateUserInfo(userDataNew);
-
-    if (response._id) {
-      setIsAccept(false);
-      setMessageAcceptAuth(UPDATE_DATA_MESSAGE);
-      setCurrentUser(userDataNew);
-    } else if (response.message === CONFLICT_ERROR_STATUS) {
-      setIsAccept(false);
-      setMessageAcceptAuth(CONFLICT_ERROR);
-    } else {
-      setIsAccept(false);
-      setMessageAcceptAuth(ERROR_SERVER_MESSAGE_SHORT);
-    }
-    messageClean = setTimeout(() => {
-      setIsAccept(true);
-      setMessageAcceptAuth('');
-    }, 5000);
-  };
+  function onClickUpdateProfile({ name, email }) {
+    mainApi.updateUserInfo({ name, email })
+      .then((res) => {
+        setMessageAcceptAuth('Вы успешно зарегистрировались!');
+        setCurrentUser(res);
+        setIsAccept(false);
+      })
+      .catch((err) => {
+        if (err) {
+          setIsAccept(false);
+          setMessageAcceptAuth("При обновлении профиля произошла ошибка");
+        }
+      })
+      .finally(() => {
+        messageClean = setTimeout(() => {
+          setMessageAcceptAuth('');
+        }, 5000);
+        setIsSaving(false);
+      })
+  }
 
   // Выход из аккаунта
   const onSignOut = () => {
@@ -218,12 +209,10 @@ function App() {
       <CurrentMoviesSaveContext.Provider value={currentMovies}>
         <div className='page'>
           <Switch>
-
             <Route exact path='/'>
               <Main
               />
             </Route>
-
             <Route path='/signin'>
               <Login
                 onLogin={onLogin}
@@ -234,7 +223,6 @@ function App() {
                 onClear={clearAllErrorMessages}
               />
             </Route>
-
             <Route path='/signup'>
               <Register
                 onRegister={onRegister}
@@ -243,17 +231,14 @@ function App() {
                 onClear={clearAllErrorMessages}
               />
             </Route>
-
             <Route path='/movies'>
               <ProtectedRoute
                 loggedIn={loggedIn}
                 component={Movies}
                 onClickSaveMovie={onClickSaveMovie}
                 openPopupsMessage={openPopupsMessage}
-
               />
             </Route>
-
             <Route path='/saved-movies'>
               <ProtectedRoute
                 loggedIn={loggedIn}
@@ -263,7 +248,6 @@ function App() {
                 openPopupsMessage={openPopupsMessage}
               />
             </Route>
-
             <Route path='/profile'>
               <ProtectedRoute
                 onSignOut={onSignOut}
@@ -274,11 +258,9 @@ function App() {
                 messageAccept={messageAcceptAuth}
               />
             </Route>
-
             <Route path='*'>
               <PageNotFound />
             </Route>
-
           </Switch>
           <InfoToolTip
             isOpen={isInfoTooltipOpen}

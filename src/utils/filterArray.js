@@ -17,7 +17,7 @@ export const filterArray = () => {
 
 export const filterSaveArray = (array, searchText, short) => {
     const filteredArray = array.filter(
-        (movie) => movie.nameRU.indexOf(searchText) >= 0
+        (movie) => movie.nameRU.toLowerCase().indexOf(searchText) >= 0
     );
     if (short === 'on') {
         const shortArray = filteredArray.filter(
