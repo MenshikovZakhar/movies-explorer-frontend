@@ -8,7 +8,7 @@ import Header from '../Header/Header';
 
 export const Profile = ({
     onSignOut,
-    loggedIn,
+    loggedIn = { loggedIn },
     onClickUpdateProfile,
     messageAccept,
     isAccept,
@@ -23,7 +23,6 @@ export const Profile = ({
     const [isValidForm, setIsValidForm] = useState(true);
     const classSaveButton = classNames(`profile__save-button`, {
         'profile__save-button_disable': !isValidForm,
-        'profile__save-button_disable profile__save-button_span-text': !isAccept,
     });
     useEffect(() => {
         setUserDataUpdate({ name: currentUser.name, email: currentUser.email });

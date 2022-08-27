@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import Main from '../Main/Main';
 import { Movies } from '../Movies/Movies';
 import { SavedMovies } from '../SavedMovies/SavedMovies';
@@ -20,6 +20,8 @@ import {
   ERROR_MOVIES_VALID_DATA_MESSAGE,
   BAD_REQUEST_STATUS,
   SAVE_MOVIE_MESSAGE,
+  UPDATE_DATA_MESSAGE,
+  CONFLICT_ERROR
 } from '../../constants/index';
 
 function App() {
@@ -77,7 +79,7 @@ function App() {
         if (err === "Ошибка 409") {
           setRegisterErrorMessage("Пользователь с таким email уже существует");
         } else {
-          setRegisterErrorMessage("При регистрации пользователя произошла ошибка");
+          setRegisterErrorMessage("Ошибка регистрации");
         }
         return;
       })
@@ -161,14 +163,14 @@ function App() {
   function onClickUpdateProfile({ name, email }) {
     mainApi.updateUserInfo({ name, email })
       .then((res) => {
-        setMessageAcceptAuth('Вы успешно зарегистрировались!');
+        setMessageAcceptAuth(UPDATE_DATA_MESSAGE);
         setCurrentUser(res);
         setIsAccept(false);
       })
       .catch((err) => {
         if (err) {
           setIsAccept(false);
-          setMessageAcceptAuth("При обновлении профиля произошла ошибка");
+          setMessageAcceptAuth(CONFLICT_ERROR);
         }
       })
       .finally(() => {
@@ -211,25 +213,26 @@ function App() {
           <Switch>
             <Route exact path='/'>
               <Main
+                loggedIn={loggedIn}
               />
             </Route>
-            <Route path='/signin'>
-              <Login
-                onLogin={onLogin}
-                messageAcceptAuth={messageAcceptAuth}
-                isAccept={isAccept}
-                errorMessage={loginErrorMessage}
-                isSaving={isSaving}
-                onClear={clearAllErrorMessages}
-              />
+            <Route exact path="/signin" >
+              {loggedIn ? <Redirect to="/" /> :
+                <Login
+                  onLogin={onLogin}
+                  errorMessage={loginErrorMessage}
+                  onClear={clearAllErrorMessages}
+                  isSaving={isSaving} />}
             </Route>
-            <Route path='/signup'>
-              <Register
-                onRegister={onRegister}
-                errorMessage={registerErrorMessage}
-                isSaving={isSaving}
-                onClear={clearAllErrorMessages}
-              />
+
+            <Route exact path='/signup' >
+              {loggedIn ? <Redirect to="/" /> :
+                <Register
+                  onRegister={onRegister}
+                  errorMessage={registerErrorMessage}
+                  isSaving={isSaving}
+                  onClear={clearAllErrorMessages}
+                />}
             </Route>
             <Route path='/movies'>
               <ProtectedRoute

@@ -38,20 +38,23 @@ export const Movies = ({ loggedIn, onClickSaveMovie, openPopupsMessage }) => {
     };
 
     const renderArray = (array) => {
-        setFilteredArrayMovies(array);
         if (array.length === 0) {
             openPopupsMessage(NOT_FOUND_MESSAGE);
+        } else {
+            setFilteredArrayMovies(array);
         }
+        setIsRender(true);
         return setPreloaderOpen(false);
     };
-
     useEffect(() => {
         const arrayAllMovies = localStorage.getItem('arrayAllMovies');
         if (!arrayAllMovies) {
             setIsRender(false);
             return;
         }
-
+        const arraySearch = filterArray();
+        setIsRender(true);
+        renderArray(arraySearch);
     }, []);
 
     return (

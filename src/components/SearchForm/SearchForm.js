@@ -75,7 +75,6 @@ export const SearchForm = ({
                         className={classButton}
                         type='button'
                         onClick={(e) => onClickSearch(e)}
-                        disabled={!isValid}
                     ></button>
                 </div>
                 <label className='checkbox__label'>
@@ -91,7 +90,7 @@ export const SearchForm = ({
                     Короткометражки
                 </label>
             </form>
-            {messageError && <span className='form__span-error'>{messageError}</span>}
+            <span className='form__span-error'>{messageError}</span>
         </section>
     );
 };
