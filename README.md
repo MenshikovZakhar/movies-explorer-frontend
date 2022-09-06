@@ -17,7 +17,7 @@ Frontend для дипломного проекта Movies Explorer, выпол�
 ## Стэк
 1. React; 
 2. React Router;
-3.JavaScript;
+3. JavaScript;
 4. HTML;
 5. CSS;
 6. БЭМ;
